@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<!--<meta http-equiv="refresh" content="60">-->
+<html>
+    <script>
+        // Tab function
+        function openTab(evt, tabName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+            }
+
+        // Worklist Button Functions
+        function skip_all() {
+            fetch('http://localhost:5000/gilson_REST/webfront/skip_all/{{ hostname }}', {method: "POST"});
+            setTimeout(() => { location.reload(); }, 500);
+        }
+
+        function skip_one(id) {
+            fetch('http://localhost:5000/gilson_REST/webfront/skip_one/' + id + "/{{ hostname }}", {method: "POST"});
+            setTimeout(() => { location.reload(); }, 500);
+        }
+
+        function continue_run() {
+            if (window.confirm("Are you sure you want to continue this run?")) {
+                fetch('http://localhost:5000/gilson_REST/webfront/continue_run/{{ hostname }}', {method: "POST"});
+                setTimeout(() => { location.reload(); }, 500);
+            }
+        }
+
+        function restart() {
+            if (window.confirm("Are you sure you want to reload worklist?")) {
+                fetch('http://localhost:5000/gilson_REST/QCreceive', {method: "POST", headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({'sourceplate': "{{ current_samplelist['sampleLists'][0]['description'] }}", 'hostname': "{{ hostname }}"})
+                });
+                setTimeout(() => { location.reload(); }, 1000);
+            }
+        }
+    </script>
+    <h1>
+        Current Gilson Worklist<br>{{ source_plate }}<br><button class="top" onclick="skip_all()">Skip All</button><button class="top" onclick="continue_run()">Continue</button><button class="top" onclick="restart()">Restart</button>
+    </h1>
+    <body>
+        <main>
+            <!-- Tab links -->
+            <div class="tab">
+                <button class="tablinks active" onclick="openTab(event, 'Worklist')">Worklist</button>
+                <button class="tablinks" onclick="openTab(event, 'Error Log')">Error Log</button>
+            </div>
+
+            <!-- Worklist tab -->
+            <div id="Worklist" class="tabcontent" style="display:block;">
+                <ol class="check-list">
+                    {% for method in samplelist_queue %}
+                        {% if method["columns"][0]["SKIPPAUSE"] == "SKIP" and loop.index <= current_place %}
+                            <ol class="check-list-skip">
+                                <li>{{ method["columns"][0]["METHODNAME"] }}: {{ method["columns"][0]["SAMPLENAME"] }}</li>
+                            </ol>
+                        {% elif method["columns"][0]["SKIPPAUSE"] == "SKIP" %}
+                            <ol class="check-list-skip">
+                                <li><button class="method" id="{{ method['id'] }}" onclick="skip_one(this.id)">{{ method["columns"][0]["METHODNAME"] }}: {{ method["columns"][0]["SAMPLENAME"] }}</button></li>
+                            </ol>
+                        {% elif method["id"] == current_samplelist["sampleLists"][0]["id"] %}
+                            <ol class="check-list-current">
+                                <li><b>{{ method["columns"][0]["METHODNAME"] }}: {{ method["columns"][0]["SAMPLENAME"] }}</b></li>
+                            </ol>
+                        {% elif loop.index <= current_place %}
+                            <ol class="check-list-current">
+                                <li>{{ method["columns"][0]["METHODNAME"] }}: {{ method["columns"][0]["SAMPLENAME"] }}</li>
+                            </ol>
+                        {% else %}
+                            <li><button class="method" id="{{ method['id'] }}" onclick="skip_one(this.id)">{{ method["columns"][0]["METHODNAME"] }}: {{ method["columns"][0]["SAMPLENAME"] }}</button></li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </div>
+            
+            <!-- Error log tab -->
+            <div id="Error Log" class="tabcontent">
+                <p>Error Log: </p>
+                <div style="height:950px;width:980px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+                    {% for error in error_log %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </main>
+    </body>
+</html>

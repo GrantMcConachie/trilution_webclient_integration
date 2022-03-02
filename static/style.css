@@ -1,0 +1,181 @@
+.check-list {
+  margin: 0;
+  width: 661.5px;
+  margin-left: 318.5px;
+}
+
+.check-list li {
+  position: relative;
+  list-style-type: none;
+  padding-left: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.check-list li:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -2px;
+    width: 5px;
+    height: 11px;
+    border-width: 0 2px 2px 0;
+    border-style: solid;
+    border-color: #00a8a8;
+    transform-origin: bottom left;
+    transform: rotate(45deg);
+}
+
+.check-list-current {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.check-list-current li {
+  position: relative;
+  list-style-type: none;
+  padding-left: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.check-list-current li:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -2px;
+    width: 5px;
+    height: 11px;
+    border-width: 0 2px 2px 0;
+    border-style: solid;
+    border-color: #f0670c;
+    transform-origin: bottom left;
+    transform: rotate(45deg);
+}
+
+.check-list-skip {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.check-list-skip li {
+  position: relative;
+  list-style-type: none;
+  padding-left: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.check-list-skip li:before {
+    content: 'X';
+    position: absolute;
+    border-width: 0 0 0 0;
+    color: #ff0000;
+    transform: rotate(0deg);
+}
+
+/* Boilerplate stuff */
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 62.5%;
+  display: table;
+  margin: auto;
+}
+
+body {
+  font-size: 1.6rem; /* 18px */
+  background-color: #efefef;
+  color: #324047;
+  display: table-cell;
+  vertical-align: right;
+}
+
+html,
+body,
+section {
+  height: 100%;
+}
+
+section {
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+}
+
+div {
+  margin: auto;
+}
+
+/* My add ons */
+
+button.top {
+  border: thin solid darkgray;
+  border-radius: 5px;
+  padding: 10px;
+  display: inline-block;
+  cursor: pointer;
+  text-align: right;
+  margin: 5px;
+}
+
+#skip {
+  display: none;
+}
+
+#skip:checked + label > li.strikethrough {
+  content: 'X';
+  color: red;
+}
+
+button.method {
+  background: none!important;
+  border: none;
+  cursor: pointer;
+}
+
+h1 {
+  text-align: center;
+}
+
+/* Style the tab */
+.tab {
+  width: 1000px;
+  overflow: hidden;
+  border: 1px solid #333131;
+  background-color: #efefef;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button.tablinks {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button.tablinks:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.tablinks.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 5px;
+  border: 1px solid #333131;
+  border-top: none;
+}
