@@ -5,7 +5,7 @@ A flask app API with a dash app and a webpage hosted on it as well.
 ## Instructions
 ```shell
 #clone
-git clone https://github.com/grantmcc98/trilution_webclient_integration.git
+git clone https://github.com/GrantMcConachie/trilution_webclient_integration.git
 
 #cd into directory
 cd trilution_webclient_integration
